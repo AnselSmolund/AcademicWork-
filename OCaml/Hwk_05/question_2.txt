@@ -1,0 +1,73 @@
+Ansel Smolund 
+Smolu006
+
+
+
+evaluate:
+
+1. andl (t::f::t::t::[])
+
+
+Call by value: 
+
+	andl (t::f::t::t::[])
+
+=	foldl and true (t::f::t::t::[])
+=	foldl and (and true t) (f::t::t::[])
+=	foldl and true (f::t::t::[])
+=	foldl and (and true f) (t::t::[])
+=	foldl and false (t::t::[])
+=	foldl and (and false t) (t::[])
+=	foldl and (false) (t::[])
+=	foldl and (and false t) ([])
+=	foldl and false [] 
+=	false 
+
+Call by name:
+	
+	andl(t::f::t::t::[])
+=	foldl and true (t::f::t::t::[])
+=	foldl and (and true t) (f::t::t::[])
+=	foldl and (and (and true t) f) (t::t::[])
+=	foldl and (and (and (and true t) f) t) (t::[])
+=	foldl and (and(and (and (and true t) f) t) t) ([])
+=	(and(and (and (and true t) f) t) t) 
+=	(and(and (and (true) f) t) t) 
+=	(and(and (false) t) t) 
+=	(and(false) t)
+=	false 
+
+
+
+2. andr (t::f::t::t::[])
+
+Call by value:
+	
+	andr(t::f::t::t::[])
+=	foldr and (t::f::t::t::[]) true 
+=	and t (foldr and (f::t::t::[]) true)
+=	and t (and f (foldr and (t::t::[]) true))
+=	and t (and f (and t (foldr and (t::[]) true)))	
+=	and t (and f (and t (and t (foldr and ([]) true))))
+=	and t (and f (and t (and t true))))
+=	and t (and f (and t (true)))
+=	and t (and f (true))
+=	and t (false)
+=	false
+
+Call by name:
+	
+	andr(t::f::t::t::[])
+
+=	foldr and (t::f::t::t::[]) true 
+=	and t (foldr and (f::t::t::[]) true)
+=	(foldr and (f::t::t::[]) true)
+=	and f (toldr and (t::t::[]) true)
+=	false 
+
+
+
+Call by name using 'andr l' is the most efficient. This is because once the list reaches an element that is false, the whole thing will be false by the definition of 'and' as well as call by semantics evaluation. 
+
+
+
